@@ -25,8 +25,6 @@ const initialCards = [
   },
 ];
 
-initialCards.forEach((card) => console.log(card.name));
-
 //DECLARACIÓN DE  VARIABLES QUE REF NODOS DE ELEMENTOS DEL DOM
 
 const profileModal = document.querySelector("#edit-popup");
@@ -38,11 +36,15 @@ const profileDesc = document.querySelector(".profile__description");
 const newCardModal = document.querySelector("#new-card-popup");
 const newCardModalCloseBtn = newCardModal.querySelector(".popup__close");
 const newCardModalForm = newCardModal.querySelector("#new-card-form");
+const newCardNameInput = newCardModal.querySelector(
+  ".popup__input_type_card-name",
+);
+const newCardUrlInput = newCardModal.querySelector(".popup__input_type_url");
 const viewModal = document.querySelector("#image-popup");
 const viewModalImage = viewModal.querySelector(".popup__image");
 const viewModalCaption = viewModal.querySelector(".popup__caption");
 const viewModalCloseBtn = viewModal.querySelector(".popup__close");
-
+const cardsListContainer = document.querySelector(".cards__list");
 const profileModalInputName = profileModal.querySelector(
   ".popup__input_type_name",
 );
@@ -113,11 +115,7 @@ function renderCard(name, link, cardListContainer) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  renderCard(
-    newCardModal.querySelector(".popup__input_type_card-name").value,
-    newCardModal.querySelector(".popup__input_type_url").value,
-    document.querySelector(".cards__list"),
-  );
+  renderCard(newCardNameInput.value, newCardUrlInput.value, cardsListContainer);
 }
 
 //DETECTORES y MANEJADORES DE EVENTOS
@@ -129,8 +127,12 @@ profileModal.addEventListener("submit", function (event) {
   closeModal(profileModal);
 });
 
-newCardAddBtn.addEventListener("click", () => openModal(newCardModal));
 newCardModalCloseBtn.addEventListener("click", () => closeModal(newCardModal));
+newCardAddBtn.addEventListener("click", () => {
+  newCardNameInput.value = "";
+  newCardUrlInput.value = "";
+  openModal(newCardModal);
+});
 viewModalCloseBtn.addEventListener("click", () => closeModal(viewModal));
 newCardModalForm.addEventListener("submit", function (event) {
   handleCardFormSubmit(event);
@@ -140,9 +142,5 @@ newCardModalForm.addEventListener("submit", function (event) {
 // INSTRUCCIONES - MAIN
 
 initialCards.forEach((cardDataObject) => {
-  renderCard(
-    cardDataObject.name,
-    cardDataObject.link,
-    document.querySelector(".cards__list"),
-  );
+  renderCard(cardDataObject.name, cardDataObject.link, cardsListContainer);
 });
