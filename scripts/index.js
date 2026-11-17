@@ -1,40 +1,18 @@
-const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
+import initialCards from "./data.js";
+import { setEventListeners } from "./validate.js";
 
 //DECLARACIÓN DE  VARIABLES QUE REF NODOS DE ELEMENTOS DEL DOM
 
 const profileModal = document.querySelector("#edit-popup");
 const profileModalCloseBtn = profileModal.querySelector(".popup__close");
+const profileModalSaveBtn = profileModal.querySelector(".popup__button");
 const newCardAddBtn = document.querySelector(".profile__add-button");
 const profileEditBtn = document.querySelector(".profile__edit-button");
 const profileTitle = document.querySelector(".profile__title");
 const profileDesc = document.querySelector(".profile__description");
 const newCardModal = document.querySelector("#new-card-popup");
 const newCardModalCloseBtn = newCardModal.querySelector(".popup__close");
+const newCardModalSaveBtn = newCardModal.querySelector(".popup__button");
 const newCardModalForm = newCardModal.querySelector("#new-card-form");
 const newCardNameInput = newCardModal.querySelector(
   ".popup__input_type_card-name",
@@ -55,6 +33,9 @@ const profileModalInputDesc = profileModal.querySelector(
 const cardListTemplate = document
   .querySelector("#card-list-templeate")
   .content.querySelector(".card");
+
+const inputsProfileModal = profileModal.querySelectorAll(".popup__input");
+const inputsNewCardModal = newCardModal.querySelectorAll(".popup__input");
 
 // DECLARACIÓN DE FUNCIONES
 
@@ -129,15 +110,44 @@ profileModal.addEventListener("submit", function (event) {
 
 newCardModalCloseBtn.addEventListener("click", () => closeModal(newCardModal));
 newCardAddBtn.addEventListener("click", () => {
-  newCardNameInput.value = "";
-  newCardUrlInput.value = "";
+  newCardModalForm.reset();
   openModal(newCardModal);
+  newCardModalSaveBtn.classList.add("popup__button_disabled");
+  newCardModalSaveBtn.disabled = true;
 });
+
 viewModalCloseBtn.addEventListener("click", () => closeModal(viewModal));
 newCardModalForm.addEventListener("submit", function (event) {
   handleCardFormSubmit(event);
   closeModal(newCardModal);
 });
+
+setEventListeners(profileModal, inputsProfileModal, profileModalSaveBtn);
+setEventListeners(newCardModal, inputsNewCardModal, newCardModalSaveBtn);
+
+document.body.addEventListener("click", (event) => {
+  if (event.target.classList.contains("popup")) {
+    closeModal(event.target);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeModal(event.target);
+  }
+});
+
+/*viewModal.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeModal(event.target);
+  }
+});
+
+profileModal.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeModal(event.target);
+  }
+});*/
 
 // INSTRUCCIONES - MAIN
 

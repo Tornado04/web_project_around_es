@@ -116,6 +116,37 @@
   top: calc(100% + 10px);
   margin: 0;
 }
+.popup__field {
+  position: relative;
+}
+
+.popup__error {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 400px;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #ff0000;
+  display: none;
+}
+
+.popup__error_visible {
+  display: block;
+}
+
+.popup__input_type_error {
+  border-bottom: 1px solid #ff0000;
+}
+
+.popup__button_disabled {
+  border: 1px solid #000000;
+  opacity: 0.2;
+}
+
+.popup__button_disabled:hover {
+  cursor: not-allowed;
+}
 
 @media screen and (max-width: 544px) {
   .popup {
