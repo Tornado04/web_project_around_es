@@ -1,5 +1,4 @@
 //DECLARACION DE FUNCIONES
-
 const showInputError = (form, inputElement, errorMessage) => {
   const errorElement = form.querySelector(`#${inputElement.id}-error`);
   inputElement.classList.add("popup__input_type_error");
@@ -14,8 +13,12 @@ const hideInputError = (form, inputElement) => {
   errorElement.classList.remove("popup__error_visible");
 };
 
+function hasInvalidInput(inputList) {
+  return Array.from(inputList).every((input) => input.validity.valid);
+}
+
 function toggleButtonState(inputs, submitButton) {
-  const allValid = Array.from(inputs).every((input) => input.validity.valid);
+  const allValid = hasInvalidInput(inputs);
   if (!allValid) {
     submitButton.classList.add("popup__button_disabled");
     submitButton.disabled = true;
@@ -35,6 +38,12 @@ export function setEventListeners(form, inputs, submitButton) {
       }
       toggleButtonState(inputs, submitButton);
     });
+  });
+}
+
+export function resetValidationForm(inputs) {
+  inputs.forEach((input) => {
+    hideInputError(input);
   });
 }
 
