@@ -29,4 +29,4 @@ Para el desarrollo del proyecto se utilizaron las siguientes tecnologías:
 
 Puedes visitar la versión publicada del proyecto a través de GitHub Pages:
 
-[**Ver Around The U.S.**](https://tu-usuario.github.io/web_project_around_es/)
+[**Ver Around The U.S.**](https://tornado04.github.io/web_project_around_es/)
