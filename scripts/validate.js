@@ -1,13 +1,18 @@
-//DECLARACION DE FUNCIONES
-const showInputError = (form, inputElement, errorMessage) => {
-  const errorElement = form.querySelector(`#${inputElement.id}-error`);
+//DECLARACIONE Y FUNCIONES
+let activeModalElement;
+const showInputError = (inputElement, errorMessage) => {
+  const errorElement = activeModalElement.querySelector(
+    `#${inputElement.id}-error`,
+  );
   inputElement.classList.add("popup__input_type_error");
   errorElement.textContent = errorMessage;
   errorElement.classList.add("popup__error_visible");
 };
 
-const hideInputError = (form, inputElement) => {
-  const errorElement = form.querySelector(`#${inputElement.id}-error`);
+const hideInputError = (inputElement) => {
+  const errorElement = activeModalElement.querySelector(
+    `#${inputElement.id}-error`,
+  );
   inputElement.classList.remove("popup__input_type_error");
   errorElement.textContent = "";
   errorElement.classList.remove("popup__error_visible");
@@ -28,36 +33,32 @@ function toggleButtonState(inputs, submitButton) {
   }
 }
 
-export function setEventListeners(form, inputs, submitButton) {
+function getInputElements(modal) {
+  return modal.querySelectorAll(".popup__input");
+}
+
+function getBtnElement(modal) {
+  return modal.querySelector(".popup__button");
+}
+
+export function setEventListeners(modal) {
+  activeModalElement = modal;
+  const inputs = getInputElements(modal);
   inputs.forEach((input) => {
     input.addEventListener("input", function () {
       if (!input.validity.valid) {
-        showInputError(form, input, input.validationMessage);
+        showInputError(input, input.validationMessage);
       } else {
-        hideInputError(form, input);
+        hideInputError(input);
       }
-      toggleButtonState(inputs, submitButton);
+      toggleButtonState(inputs, getBtnElement(modal));
     });
   });
 }
 
-export function resetValidationForm(inputs) {
-  inputs.forEach((input) => {
+export function resetValidationForm(modal) {
+  activeModalElement = modal;
+  getInputElements(modal).forEach((input) => {
     hideInputError(input);
   });
 }
-
-/*form.addEventListener("submit", (event) => {
-  let formValid = true;
-
-  inputs.forEach((input) => {
-    if (!input.validity.valid) {
-      showInputError(input, input.validationMessage);
-      formValid = false;
-    }
-  });
-
-  if (!formValid) {
-    event.preventDefault();
-  }
-});*/
