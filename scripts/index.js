@@ -40,36 +40,31 @@ const cardListTemplate = document
 
 function openModal(modalElement) {
   modalElement.classList.add("popup_is-opened");
-  document.addEventListener("keydown", addKeydowEvent(modalElement));
-  document.addEventListener("click", addClickEvent());
+  document.addEventListener("keydown", closeByEscape);
 }
 
 function closeModal(modalElement) {
   modalElement.classList.remove("popup_is-opened");
-  document.removeEventListener("keydown", addKeydowEvent());
-  document.removeEventListener("click", addClickEvent());
+  document.removeEventListener("keydown", closeByEscape);
   resetValidationForm(modalElement);
 }
 
-function addKeydowEvent(modal) {
-  return function (event) {
-    if (event.key === "Escape") {
-      closeModal(modal);
-    }
-  };
+function closeByEscape(evt) {
+  if (evt.key === "Escape") {
+    const openedModal = document.querySelector(".popup_is-opened");
+    closeModal(openedModal);
+  }
 }
 
-function addClickEvent() {
-  return function (event) {
-    if (event.target.classList.contains("popup")) {
-      closeModal(event.target);
-    }
-  };
+function closeByOverlay(evt) {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.currentTarget);
+  }
 }
 
 function handleOpenEditModal() {
   fillProfileForm();
-  setEventListeners(profileModal);
+  resetValidationForm(profileModal);
   openModal(profileModal);
 }
 
@@ -122,6 +117,10 @@ function handleCardFormSubmit(evt) {
 
 //DETECTORES y MANEJADORES DE EVENTOS
 
+profileModal.addEventListener("click", closeByOverlay);
+newCardModal.addEventListener("click", closeByOverlay);
+viewModal.addEventListener("click", closeByOverlay);
+
 profileEditBtn.addEventListener("click", handleOpenEditModal);
 profileModalCloseBtn.addEventListener("click", () => closeModal(profileModal));
 profileModal.addEventListener("submit", function (event) {
@@ -132,9 +131,7 @@ profileModal.addEventListener("submit", function (event) {
 newCardModalCloseBtn.addEventListener("click", () => closeModal(newCardModal));
 newCardAddBtn.addEventListener("click", () => {
   newCardModalForm.reset();
-  newCardModalSaveBtn.classList.add("popup__button_disabled");
-  newCardModalSaveBtn.disabled = true;
-  setEventListeners(newCardModal);
+  resetValidationForm(newCardModal);
   openModal(newCardModal);
 });
 
@@ -149,3 +146,6 @@ newCardModalForm.addEventListener("submit", function (event) {
 initialCards.forEach((cardDataObject) => {
   renderCard(cardDataObject.name, cardDataObject.link, cardsListContainer);
 });
+
+setEventListeners(profileModal);
+setEventListeners(newCardModal);
