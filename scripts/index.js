@@ -46,7 +46,6 @@ function openModal(modalElement) {
 function closeModal(modalElement) {
   modalElement.classList.remove("popup_is-opened");
   document.removeEventListener("keydown", closeByEscape);
-  resetValidationForm(modalElement);
 }
 
 function closeByEscape(evt) {
